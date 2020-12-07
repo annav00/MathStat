@@ -4,6 +4,19 @@ from scipy.stats import norm, cauchy, laplace, poisson, uniform
 
 numOfCalculations = 1000
 
+
+def nameRvs (name):
+     if name == "Normal":
+                return sorted(norm.rvs(size = size))
+     if name == "Cauchy":
+                return sorted(cauchy.rvs(size = size))
+     if name == "Laplace":
+                return sorted(laplace.rvs(loc = 0, scale = (1 / math.sqrt(2)), size = size))              
+     if name == "Poisson":
+                return sorted(poisson.rvs(mu = 10, size = size))
+     if name == "Uniform":
+                return sorted(uniform.rvs(loc = -math.sqrt(3),  scale = (2 * math.sqrt(3)), size = size))
+        
 def findAv(array, n):
     return 1/n * np.sum(array)
 
@@ -16,7 +29,7 @@ def findMed(array, n):
         return array[l]
 
     
-def findZ_R(array, n):
+def findZR(array, n):
     return (array[0] + array[n - 1])/2
 
 
@@ -27,11 +40,11 @@ def findQuartile(p, array, n):
         return array[int(n*p)]
     
     
-def findZ_Q(array, n):
+def findZQ(array, n):
     return (findQuartile(1/4, array, n) + findQuartile(3/4, array, n))/2
     
 
-def findZ_tr(array, n):
+def findZtr(array, n):
     r = int(n/4)
     sliceArray = 0
     for i in range(r, n-r):
@@ -42,9 +55,9 @@ def findZ_tr(array, n):
 def findZ(array, n): 
         averageSeq.append(findAv(array, n))
         medSeq.append(findMed(array, n))
-        z_rSeq.append(findZ_R(array, n))
-        z_qSeq.append(findZ_Q(array, n))
-        z_trSeq.append(findZ_tr(array, n))
+        z_rSeq.append(findZR(array, n))
+        z_qSeq.append(findZQ(array, n))
+        z_trSeq.append(findZtr(array, n))
 
 def findE(averageSeq, medSeq, z_rSeq, z_qSeq, z_trSeq):
     result = []
@@ -85,30 +98,6 @@ def findD(averageSeq, medSeq, z_rSeq, z_qSeq, z_trSeq):
         result.append(z2[i] - z[i]**2)
         i += 1;
     return result
-        
-    
-def findDispSum(array, n):
-    average = findAv(array, n)
-    sum = 0
-    for element in array:
-        sum += (element-average) ** 2
-    return sum
-        
-def findDispersion(array, n):
-    return 1/n*findDispSum(array, n)
-
-def nameRvs (name):
-     if name == "Normal":
-                return sorted(norm.rvs(size = size))
-     if name == "Cauchy":
-                return sorted(cauchy.rvs(size = size))
-     if name == "Laplace":
-                return sorted(laplace.rvs(loc = 0, scale = (1 / math.sqrt(2)), size = size))              
-     if name == "Poisson":
-                return sorted(poisson.rvs(mu = 10, size = size))
-     if name == "Uniform":
-                return sorted(uniform.rvs(loc = -math.sqrt(3),  scale = (2 * math.sqrt(3)), size = size))
-
 
 for size in [10, 100, 1000]:
     names = ["Normal", "Cauchy", "Laplace", "Poisson", "Uniform"]
